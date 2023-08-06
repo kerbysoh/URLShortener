@@ -1,3 +1,5 @@
+import { saveAs } from 'file-saver'
+
 const QRCodeModal = (props) => {
 
     const { link, qrModalCallback } = props
@@ -14,13 +16,22 @@ const QRCodeModal = (props) => {
                         <div className="relative p-6 flex-auto">
                             <img src={generateQRLink(link)} alt="" title="" />
                         </div>
-                        <div className="flex border-t border-solid border-slate-200 rounded-b justify-end pt-4">
+                        <div className="flex p-6 border-t border-solid border-slate-200 rounded-b justify-end space-x-4">
                             <button
                                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                 type="button"
                                 onClick={() => qrModalCallback()}
                             >
                                 Close
+                            </button>
+                            <button
+                                onClick={() => {
+                                    saveAs(generateQRLink(link), 'qr.jpg')
+                                    qrModalCallback()
+                                }}
+                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                            >
+                                Download
                             </button>
                         </div>
                     </div>
