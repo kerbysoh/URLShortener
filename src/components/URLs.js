@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getLinks } from '../api/url'
 import { deleteLink } from '../api/url'
+import CopyModal from './copyModal'
 
 const URLs = (props) => {
     
@@ -11,7 +12,9 @@ const URLs = (props) => {
 
     const [links, setLinks] = useState([])
     const [showModal, setShowModal] = useState(false)
+    const [showCopyModal, setShowCopyModal] = useState(false)
     const [error, setError] = useState('')
+    const [copiedURL, setCopiedURL] = useState('')
     const [selectedLink, setSelectedLink] = useState({ id: '', URL: '', ShortenedURL : '' })
 
     useEffect(() => {
@@ -35,6 +38,10 @@ const URLs = (props) => {
         }
     }
 
+    const copyModalCallback = () => {
+        setShowCopyModal(false)
+    }
+
     const convertToHttp = (url) => {
         const httpPattern = /^((http|https|ftp):\/\/)/;
         if(!httpPattern.test(url)) {
@@ -56,9 +63,23 @@ const URLs = (props) => {
 
         return (
             <tr class="bg-white border hover:bg-gray-50">
-                <td className="px-4 py-2 text-center"> <a href={convertToHttp(longUrl)} className="text-grey-100 hover:text-grey-700">{longUrl}</a></td>
-                <td className="px-4 py-2 text-center"><a href={shortUrl} className="text-grey-100 hover:text-grey-700">{shortUrl}</a></td>
+                <td className="px-4 py-2 text-center break-all"> <a href={convertToHttp(longUrl)} className="text-grey-100 hover:text-grey-700">{longUrl}</a></td>
                 <td className="px-4 py-2 text-center">
+                    <a href={shortUrl} className="text-grey-100 hover:text-grey-700">{shortUrl}
+                    </a>
+                </td>
+                <td className="pt-2 text-center">
+                    <button onClick={() => {
+                        setShowCopyModal(true)
+                        setCopiedURL(shortUrl)
+                        navigator.clipboard.writeText(shortUrl)
+                    }}>
+                        <svg class="w-[18px] h-[18px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7.708 2.292.706-.706A2 2 0 0 1 9.828 1h6.239A.97.97 0 0 1 17 2v12a.97.97 0 0 1-.933 1H15M6 5v4a1 1 0 0 1-1 1H1m11-4v12a.97.97 0 0 1-.933 1H1.933A.97.97 0 0 1 1 18V9.828a2 2 0 0 1 .586-1.414l2.828-2.828A2 2 0 0 1 5.828 5h5.239A.97.97 0 0 1 12 6Z"/>
+                        </svg>
+                    </button>
+                </td>
+                <td className="px-4 pt-1.5 text-center">
                     <button onClick={() => {
                         setShowModal(true)
                         setSelectedLink({ id: link.id, URL: longUrl, ShortenedURL : shortUrl })
@@ -74,11 +95,12 @@ const URLs = (props) => {
 
     return (
         <>
-        <table className="table-auto w-full overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 my-4">
+        <table className="table-auto w-full overflow-x-auto overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 my-4">
             <thead>
                 <tr>
                     <th className="px-4 py-2 bg-gray-300">URL</th>
                     <th className="px-4 py-2 bg-gray-300">Shortened URL</th>
+                    <th className="px-4 py-2 bg-gray-300"/>
                     <th className="px-4 py-2 bg-gray-300"/>
                 </tr>
             </thead>
@@ -86,6 +108,7 @@ const URLs = (props) => {
                 {links.map((link) => entries(link))}
             </tbody>
         </table>
+        {showCopyModal && <CopyModal copiedURL = {copiedURL} copyModalCallback={copyModalCallback} />}
         {showModal && (
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                 <div className="relative w-auto my-6 mx-auto max-w-3xl w-96">
@@ -106,7 +129,7 @@ const URLs = (props) => {
                 <div className="relative p-6 flex-auto">
                     <p className="my-1 text-slate-500 text-lg leading-relaxed">
                     <form onSubmit={(e) => onSubmit(e)} vclass="w-full">
-                    <div class="flex flex-wrap mx-1 mb-6">
+                    <div class="flex flex-wrap mx-1 mb-6 break-all">
                         <h4>
                         Confirm to delete the link <b>{selectedLink.ShortenedURL}</b> for <b>{selectedLink.URL} </b>
                         </h4>
@@ -136,7 +159,7 @@ const URLs = (props) => {
                         className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="submit"
                         >
-                        Confirm
+                            Confirm
                         </button>
                     </div>
                     </form>
