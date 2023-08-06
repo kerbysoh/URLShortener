@@ -29,7 +29,7 @@ const Login = () => {
       localStorage.setItem('isAuth', 'true')
       localStorage.setItem('user', JSON.stringify(response.data))
     } catch (error) {
-      console.log(error.response.data.errors[0].msg)
+      console.log(error)
       setError(error.response.data.errors[0].msg)
     }
   }
