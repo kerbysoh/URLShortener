@@ -1,5 +1,5 @@
 import {
-  BrowserRouter,
+  HashRouter,
   Navigate,
   Routes,
   Route,
@@ -27,7 +27,7 @@ const RestrictedRoutes = () => {
 const App = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path='/' element = {<Navigate to="/login" />}  />
           <Route element={<PrivateRoutes />}>
@@ -39,7 +39,7 @@ const App = () => {
             <Route path='/login' element={<Login />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </Provider>
   )
 }
