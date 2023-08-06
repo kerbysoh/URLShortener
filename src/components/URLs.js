@@ -49,7 +49,7 @@ const URLs = (props) => {
         let serverURL = process.env.REACT_APP_SERVER_URL
 
         if (process.env.NODE_ENV === 'production') {
-            serverURL = ""
+            serverURL = "https://shrtn-backend.onrender.com"
         }
 
         const shortUrl = serverURL + `/links/${link.id}`
