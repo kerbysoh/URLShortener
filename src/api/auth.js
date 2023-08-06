@@ -3,7 +3,7 @@ axios.defaults.withCredentials = true
 let serverURL = process.env.REACT_APP_SERVER_URL
 
 if (process.env.NODE_ENV === 'production') {
-  serverURL = "https://shrtn-backend.onrender.com/"
+  serverURL = "https://shrtn-backend.onrender.com"
 }
 
 export async function onRegistration(registrationData) {
