@@ -2,38 +2,39 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchProtectedInfo, onLogout } from '../api/auth'
 import Layout from '../components/layout'
+import URLs from '../components/URLs'
+import Menu from '../components/menu'
 import { unauthenticateUser } from '../redux/slices/authSlice'
 
 const Dashboard = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
-  const [protectedData, setProtectedData] = useState(null)
+  const [refresh, setRefresh] = useState(false)
 
-  const logout = async () => {
-    try {
-      await onLogout()
-      dispatch(unauthenticateUser())
-      localStorage.removeItem('isAuth')
-    } catch (error) {
-      console.log(error.response)
-    }
-  }
-
-  const protectedInfo = async () => {
-    try {
-      const { data } = await fetchProtectedInfo()
-
-      setProtectedData(data.info)
-
-      setLoading(false)
-    } catch (error) {
-      logout()
-    }
+  const refreshCallback = () => {
+    setRefresh(!refresh)
   }
 
   useEffect(() => {
+    const logout = async () => {
+      try {
+        await onLogout()
+        dispatch(unauthenticateUser())
+        localStorage.removeItem('isAuth')
+      } catch (error) {
+        console.log(error.response)
+      }
+    }
+    const protectedInfo = async () => {
+      try {
+        await fetchProtectedInfo()
+        setLoading(false)
+      } catch (error) {
+        logout()
+    }
+  }
     protectedInfo()
-  }, [])
+  }, [dispatch])
 
   return loading ? (
     <Layout>
@@ -42,6 +43,10 @@ const Dashboard = () => {
   ) : (
     <div class="bg-purple-100">
       <Layout>
+        <div class="flex space-x-4 m-4">
+          <URLs refresh={refresh} refreshCallback={refreshCallback} />
+          <Menu refreshCallback={refreshCallback} />
+        </div>
       </Layout>
     </div>
   )

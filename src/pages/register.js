@@ -39,21 +39,21 @@ const Register = () => {
     <div class="flex h-screen grid gap-4 justify-center ... bg-purple-100">
       <div class="m-auto space-y-3">
           <div class="justify-center">
-              <img src={logo} class="mx-auto" />
+              <img src={logo} alt="No logo available" class="mx-auto" />
           </div>
           <div class="justify-center">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">           
                 <li class="flex-auto">
                     <NavLink to='/login'>    
-                        <a class="inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                        <button class="inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
                             Login
-                        </a>
+                        </button>
                     </NavLink>
                 </li>
                 <li class="flex-auto">
-                    <a class="inline-flex p-4 text-purple-600 rounded-t-lg border-b-2 border-purple-600 active dark:text-purple-500 dark:border-purple-500 group" aria-current="page">
+                    <button class="inline-flex p-4 text-purple-600 rounded-t-lg border-b-2 border-purple-600 active dark:text-purple-500 dark:border-purple-500 group" aria-current="page">
                         Register
-                    </a>
+                    </button>
                 </li>
             </ul>
           </div>
